@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTC Local | Network Infrastructure Documentation</title>
+    <style>
+        /* --- Corporate Stylesheet --- */
+        :root {
+            --primary: #004080;   /* Deep Blue */
+            --secondary: #0059b3; /* Lighter Blue */
+            --accent: #e69500;    /* Technical Gold/Orange */
+            --dark: #1a1a1a;
+            --light: #f4f4f9;
+            --white: #ffffff;
+            --border: #ddd;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 30px 0;
+            border-bottom: 4px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        /* Executive Summary / Narration */
+        .summary-box {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px auto;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .summary-box h2 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+        .summary-box blockquote {
+            font-style: italic;
+            color: #555;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 0;
+        }
+
+        /* IMAGE CENTERING STYLE */
+        .diagram-wrapper {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .diagram-wrapper img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border: 3px solid #ffffff;
+        }
+
+        /* Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            border: 1px solid var(--border);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 15px 20px;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .card-header .subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Data Tables inside Cards */
+        table.specs {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        table.specs td {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        table.specs td.label {
+            font-weight: bold;
+            color: var(--primary);
+            width: 40%;
+        }
+
+        table.specs td.value {
+            font-family: 'Consolas', monospace;
+            color: #333;
+        }
+
+        /* Role Badges */
+        .role-badge {
+            display: inline-block;
+            background-color: #eef2f5;
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #d1d9e6;
+        }
+
+        /* Purpose Section */
+        .purpose-section {
+            background-color: #fcfcfc;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 13px;
+            color: #444;
+            border: 1px dashed #ccc;
+        }
+        
+        .purpose-section strong {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--secondary);
+        }
+
+        .purpose-section ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--dark);
+            color: #888;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>VTC Local Infrastructure</h1>
+            <p>Build a Complete Private Isolated Network: AD DS, DNS, DHCP & IIS Website Hosting in VMware</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="summary-box">
+            <h2>System Overview</h2>
+            <blockquote>
+                "In this setup, both PDC and ADC are part of the vtc.local domain and operate inside a fully isolated network using the VMware LAN Segment LAN1. Both servers provide DHCP, ensuring the client receives a dynamic IP address. The client machine also joins the domain and uses the PDC and ADC for authentication, DNS resolution, and accessing internal services hosted inside the private network."
+            </blockquote>
+        </section>
+
+        <!-- ⭐ INSERTED IMAGE (CENTERED) ⭐ -->
+        <div class="diagram-wrapper">
+            <img src="image.PNG" alt="Network Structure Diagram">
+        </div>
+
+        <div class="grid-container">
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>SRV1 (PDC)</h3>
+                    <div class="subtitle">Primary Domain Controller</div>
+                </div>
+                <div class="card-body">
+                    <div style="margin-bottom: 15px;">
+                        <span class="role-badge">AD DS</span>
+                        <span class="role-badge">DNS</span>
+                        <span class="role-badge">DHCP</span>
+                        <span class="role-badge">IIS Web Server</span>
+                    </div>
+
+                    <table class="specs">
+                        <tr><td class="label">Domain</td><td class="value">vtc.local</td></tr>
+                        <tr><td class="label">Network</td><td class="value">Private (LAN1)</td></tr>
+                        <tr><td class="label">IP Address</td><td class="value">192.168.10.254</td></tr>
+                        <tr><td class="label">Subnet Mask</td><td class="value">255.255.255.0</td></tr>
+                        <tr><td class="label">Gateway</td><td class="value">192.168.10.1</td></tr>
+                        <tr><td class="label">DNS</td><td class="value">192.168.10.254</td></tr>
+                    </table>
+
+                    <div class="purpose-section">
+                        <strong>Purpose:</strong>
+                        <ul>
+                            <li>Main domain controller of vtc.local</li>
+                            <li>Handles authentication, DNS, DHCP, and website hosting</li>
+                            <li>Replicates with ADC</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>SRV2 (ADC)</h3>
+                    <div class="subtitle">Additional Domain Controller</div>
+                </div>
+                <div class="card-body">
+                    <div style="margin-bottom: 15px;">
+                        <span class="role-badge">AD DS</span>
+                        <span class="role-badge">ADC</span>
+                        <span class="role-badge">Sec DNS</span>
+                        <span class="role-badge">DHCP Failover</span>
+                    </div>
+
+                    <table class="specs">
+                        <tr><td class="label">Domain</td><td class="value">vtc.local</td></tr>
+                        <tr><td class="label">Network</td><td class="value">Private (LAN1)</td></tr>
+                        <tr><td class="label">IP Address</td><td class="value">192.168.10.253</td></tr>
+                        <tr><td class="label">Subnet Mask</td><td class="value">255.255.255.0</td></tr>
+                        <tr><td class="label">Gateway</td><td class="value">192.168.10.1</td></tr>
+                        <tr><td class="label">Pref DNS</td><td class="value">192.168.10.254</td></tr>
+                        <tr><td class="label">Alt DNS</td><td class="value">192.168.10.253</td></tr>
+                    </table>
+
+                    <div class="purpose-section">
+                        <strong>Purpose:</strong>
+                        <ul>
+                            <li>Replicates AD DS database from PDC</li>
+                            <li>Provides high availability for DNS and DHCP</li>
+                            <li>Ensures domain continuity if PDC is offline</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>CLIENT PC</h3>
+                    <div class="subtitle">Domain Workstation</div>
+                </div>
+                <div class="card-body">
+                    <div style="margin-bottom: 15px;">
+                        <span class="role-badge">Domain Member</span>
+                        <span class="role-badge">DHCP Client</span>
+                    </div>
+
+                    <table class="specs">
+                        <tr><td class="label">Domain</td><td class="value">vtc.local</td></tr>
+                        <tr><td class="label">Network</td><td class="value">Private (LAN1)</td></tr>
+                        <tr><td class="label">IP Address</td><td class="value">Automatic (DHCP)</td></tr>
+                        <tr><td class="label">Subnet Mask</td><td class="value">255.255.255.0</td></tr>
+                        <tr><td class="label">Gateway</td><td class="value">192.168.10.1</td></tr>
+                        <tr><td class="label">Pref DNS</td><td class="value">192.168.10.254</td></tr>
+                        <tr><td class="label">Alt DNS</td><td class="value">192.168.10.253</td></tr>
+                    </table>
+
+                    <div class="purpose-section">
+                        <strong>Purpose:</strong>
+                        <ul>
+                            <li>Connects to PDC/ADC for authentication</li>
+                            <li>Logs into the vtc.local domain</li>
+                            <li>Tests DNS, DHCP, and IIS hosted websites</li>
+                            <li>Fully operates inside isolated LAN1</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
